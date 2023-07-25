@@ -39,7 +39,7 @@ async def generate_cards():
         # profile
         profile_result = await encard.profile(ENCpy, 1)
         print(profile_result)
-        profile_result['img'].save(os.path.join(outputdir, 'profile.png'))
+        profile_result['img'].convert('RGB').save(os.path.join(outputdir, 'profile.jpg'))
 
         # avatar
         for character in profile_result['characters'].keys():
