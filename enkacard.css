@@ -1,0 +1,25 @@
+#enkacard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+#enkacard #enkacard_headbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+#enkacard #enkacard_headbar img {
+    width: 64px;
+    margin: 0px 8px;
+}
+#enkacard #enkacard_headbar img:hover {
+    cursor: pointer;
+}
+#enkacard #enkacard_detail {
+    width: 100%;
+}
