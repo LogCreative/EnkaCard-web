@@ -10,16 +10,19 @@
     align-items: center;
     justify-content: center;
     margin: 10px;
-    width: 100%;
+    width: 80%;
     flex-wrap: wrap;
 }
 #enkacard #enkacard_headbar img {
-    width: 64px;
+    width: 48px;
     margin: 0px 8px;
 }
 #enkacard #enkacard_headbar img:hover {
     cursor: pointer;
 }
 #enkacard #enkacard_detail {
+    width: 100%;
+}
+#enkacard #enkacard_detail_img {
     width: 100%;
 }
