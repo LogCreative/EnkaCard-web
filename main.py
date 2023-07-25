@@ -53,10 +53,10 @@ async def generate_cards():
         character_narrow_result = await encard.creat(ENCpy, 7)
         print(character_narrow_result)
         for character in character_wide_result[uid].keys():
-            character_wide_result[uid][character]['img'].save(
-                os.path.join(outputdir, 'wide_{}.png'.format(character)))
-            character_narrow_result[uid][character]['img'].save(
-                os.path.join(outputdir, 'narrow_{}.png'.format(character)))
+            character_wide_result[uid][character]['img'].convert('RGB').save(
+                os.path.join(outputdir, 'wide_{}.jpg'.format(character)))
+            character_narrow_result[uid][character]['img'].convert('RGB').save(
+                os.path.join(outputdir, 'narrow_{}.jpg'.format(character)))
         
         # config
         character_list_str = []

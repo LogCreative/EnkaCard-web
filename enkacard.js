@@ -19,11 +19,11 @@ enkacard_detail.appendChild(enkacard_detail_img)
 
 function showCharacter(e) {
     character_obj_narrow = document.getElementById("enkacard_detail_narrow")
-    character_obj_narrow.setAttribute("srcset", imgdir + "/narrow_" + this.id + ".png")
+    character_obj_narrow.setAttribute("srcset", imgdir + "/narrow_" + this.id + ".jpg")
     character_obj_wide = document.getElementById("enkacard_detail_wide")
-    character_obj_wide.setAttribute("srcset", imgdir + "/wide_" + this.id + ".png")
+    character_obj_wide.setAttribute("srcset", imgdir + "/wide_" + this.id + ".jpg")
     character_obj_img = document.getElementById("enkacard_detail_img")
-    character_obj_img.setAttribute("src", imgdir + "/wide_" + this.id + ".png")
+    character_obj_img.setAttribute("src", imgdir + "/wide_" + this.id + ".jpg")
 }
 
 characters.forEach(character => {
