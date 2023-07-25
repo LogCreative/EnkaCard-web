@@ -12,8 +12,7 @@ preserve = False         # preserve previous character runs
 if os.path.exists(outputdir):
     if not preserve:
         shutil.rmtree(outputdir)
-else:
-    os.makedirs(outputdir)
+os.makedirs(outputdir, exist_ok=True)
 
 async def generate_cards():
     async with encbanner.ENC(lang=lang) as encard:
