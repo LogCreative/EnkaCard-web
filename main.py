@@ -8,7 +8,7 @@ import os, shutil
 
 parser = argparse.ArgumentParser(prog='ENKA Card Web',
             description='A static web page generator for EnkaCard')
-parser.add_argument('--uid', '-u', metavar='U', type=str, help="account uid")
+parser.add_argument('--uid', '-u', metavar='U', type=str, help="account uid", required=True)
 parser.add_argument('--outputdir', '-o', metavar='O', type=str, default='genshin',
                     help="image directory for saving (default: genshin)")
 parser.add_argument('--imgdir', '-fo', metavar='FO', type=str, default=None,
