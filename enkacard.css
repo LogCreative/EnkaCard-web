@@ -13,12 +13,22 @@
     width: 80%;
     flex-wrap: wrap;
 }
+#enkacard #enkacard_headbar .imgdiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+}
+#enkacard #enkacard_headbar .imgdiv:hover {
+    cursor: pointer;
+}
 #enkacard #enkacard_headbar img {
     width: 48px;
-    margin: 0px 8px;
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-#enkacard #enkacard_headbar img:hover {
-    cursor: pointer;
+#enkacard #enkacard_headbar .imgdiv:hover > img {
+    width: 56px;
 }
 #enkacard #enkacard_detail {
     width: 100%;
