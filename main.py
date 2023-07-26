@@ -52,17 +52,21 @@ async def generate_cards():
         print(character_wide_result)
         character_narrow_result = await encard.creat(ENCpy, 7)
         print(character_narrow_result)
+        character_list_str = []
         for character in character_wide_result[uid].keys():
+            character_list_str.append('"' + character + '"')
             character_wide_result[uid][character]['img'].convert('RGB').save(
                 os.path.join(outputdir, 'wide_{}.jpg'.format(character)))
             character_narrow_result[uid][character]['img'].convert('RGB').save(
                 os.path.join(outputdir, 'narrow_{}.jpg'.format(character)))
         
         # config
-        character_list_str = []
+        # in case there are more characters in the folder
         for filename in os.listdir(outputdir):
             if 'wide_' in filename:
-                character_list_str.append('"' + filename.split('_')[1].rsplit('.')[0] + '"')
+                f_character = '"' + filename.split('_')[1].rsplit('.')[0] + '"'
+                if f_character not in character_list_str:
+                    character_list_str.append(f_character)
         with open("enkacard_config.js", "w") as config_js:
             config_js.write("characters = [{}];\nimgdir = \"{}\"\n".format(
                 ', '.join(character_list_str), imgdir))
