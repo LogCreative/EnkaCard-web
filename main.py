@@ -20,11 +20,11 @@ parser.add_argument('--preserve', '-p', metavar='P', type=bool, default=False,
                     "which is useful if you want to display more characters (default: False)")
 args = parser.parse_args()
 
-uid            = args.uid
-outputdir      = args.outputdir
-imgdir         = outputdir if args.imgdir is None else args.imgdir
-lang           = args.lang
-preserve       = args.preserve
+uid       = args.uid
+outputdir = args.outputdir
+imgdir    = outputdir if args.imgdir is None else args.imgdir
+lang      = args.lang
+preserve  = args.preserve
 
 if os.path.exists(outputdir):
     if not preserve:
@@ -36,37 +36,39 @@ async def generate_cards():
         # get info
         ENCpy = await encard.enc(uids=uid)
 
-        # profile
         profile_result = await encard.profile(ENCpy, 1)
         print(profile_result)
         profile_result['img'].convert('RGB').save(os.path.join(outputdir, 'profile.jpg'))
 
-        # avatar
-        for character in profile_result['characters'].keys():
-            character_icon_img = await imgD(profile_result['characters'][character]['image'])
-            character_icon_img.save(
-                os.path.join(outputdir, 'icon_{}.png'.format(character)))
-        
-        # character detail
         character_wide_result = await encard.creat(ENCpy, 3)
         print(character_wide_result)
         character_narrow_result = await encard.creat(ENCpy, 7)
         print(character_narrow_result)
-        character_list_str = []
-        for character in character_wide_result[uid].keys():
-            character_list_str.append('"' + character + '"')
-            character_wide_result[uid][character]['img'].convert('RGB').save(
-                os.path.join(outputdir, 'wide_{}.jpg'.format(character)))
-            character_narrow_result[uid][character]['img'].convert('RGB').save(
-                os.path.join(outputdir, 'narrow_{}.jpg'.format(character)))
         
-        # config
+        character_list_str = []
+        for character in profile_result['characters'].keys():
+            character_str = character.replace(' ','_')  # avoid space in the filename
+
+            # avatar
+            character_icon_img = await imgD(profile_result['characters'][character]['image'])
+            character_icon_img.save(
+                os.path.join(outputdir, 'avatar-{}.png'.format(character_str)))
+        
+            # character detail
+            character_list_str.append('"' + character_str + '"')
+            character_wide_result[uid][character]['img'].convert('RGB').save(
+                os.path.join(outputdir, 'wide-{}.jpg'.format(character_str)))
+            character_narrow_result[uid][character]['img'].convert('RGB').save(
+                os.path.join(outputdir, 'narrow-{}.jpg'.format(character_str)))
+        
         # in case there are more characters in the folder
         for filename in os.listdir(outputdir):
-            if 'wide_' in filename:
-                f_character = '"' + filename.split('_')[1].rsplit('.')[0] + '"'
+            if 'wide-' in filename:
+                f_character = '"' + filename.rsplit('.')[0].split('-')[1] + '"'
                 if f_character not in character_list_str:
                     character_list_str.append(f_character)
+        
+        # config
         with open("enkacard_config.js", "w") as config_js:
             config_js.write("characters = [{}];\nimgdir = \"{}\"\n".format(
                 ', '.join(character_list_str), imgdir))
