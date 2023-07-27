@@ -50,23 +50,27 @@ async def generate_cards():
             character_str = character.replace(' ','_')  # avoid space in the filename
 
             # avatar
-            character_icon_img = await imgD(profile_result['characters'][character]['image'])
-            character_icon_img.save(
-                os.path.join(outputdir, 'avatar-{}.png'.format(character_str)))
-        
+            character_avatar = await imgD(profile_result['characters'][character]['image'])
+            character_rarity = profile_result['characters'][character]['rarity']
+            character_fullname = "{}-{}".format(character_str, character_rarity)
+            character_avatar.save(
+                os.path.join(outputdir, 'avatar-{}.png'.format(character_fullname)))
+
             # character detail
-            character_list_str.append('"' + character_str + '"')
+            character_list_str.append('"' + character_fullname + '"')
             character_wide_result[uid][character]['img'].convert('RGB').save(
-                os.path.join(outputdir, 'wide-{}.jpg'.format(character_str)))
+                os.path.join(outputdir, 'wide-{}.jpg'.format(character_fullname)))
             character_narrow_result[uid][character]['img'].convert('RGB').save(
-                os.path.join(outputdir, 'narrow-{}.jpg'.format(character_str)))
+                os.path.join(outputdir, 'narrow-{}.jpg'.format(character_fullname)))
         
         # in case there are more characters in the folder
         for filename in os.listdir(outputdir):
-            if 'wide-' in filename:
-                f_character = '"' + filename.rsplit('.')[0].split('-')[1] + '"'
-                if f_character not in character_list_str:
-                    character_list_str.append(f_character)
+            if 'avatar-' in filename:
+                f_character_name = filename.rsplit('.')[0].split('-')[1]
+                f_character_rarity = filename.rsplit('.')[0].split('-')[2]
+                f_character_fullname = '"' + "{}-{}".format(f_character_name, f_character_rarity) + '"'
+                if f_character_fullname not in character_list_str:
+                    character_list_str.append(f_character_fullname)
         
         # config
         with open("enkacard_config.js", "w") as config_js:
