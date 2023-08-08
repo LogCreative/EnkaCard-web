@@ -42,8 +42,11 @@
     box-shadow: 2px 2px 2px 1px whitesmoke;
 }
 #enkacard #enkacard_detail {
+    display: flex;
     width: 100%;
+    align-items: center;
+    justify-content: center;
 }
 #enkacard #enkacard_detail_img {
-    width: 100%;
+    max-width: 100%;
 }
