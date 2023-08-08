@@ -26,6 +26,7 @@
 #enkacard #enkacard_headbar img {
     width: 48px;
     transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0px 0px whitesmoke;
     border: 0px;
     border-radius: 5px 5px 10px 5px;
 }
@@ -34,6 +35,11 @@
 }
 #enkacard #enkacard_headbar .rarity4 {
     background-image: linear-gradient(rgb(135,122,169),rgb(164,133,195));
+}
+#enkacard #enkacard_headbar .rarity5,
+#enkacard #enkacard_headbar .rarity4 {
+    width: 56px;
+    box-shadow: 2px 2px 2px 1px whitesmoke;
 }
 #enkacard #enkacard_detail {
     width: 100%;

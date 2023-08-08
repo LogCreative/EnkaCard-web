@@ -21,14 +21,11 @@ chara_img_list = []
 
 function showCharacter(e) {
     chara_img_list.forEach(element => {
-        element.style.setProperty("width", "48px")
-        element.style.setProperty("box-shadow", "0px 0px whitesmoke")
-        element.setAttribute("class","")
+        element_chara_rarity = element.id.split('-')[1]
+        element.classList.remove("rarity" + element_chara_rarity)
     });
     chara_rarity = this.id.split('-')[1]
-    this.setAttribute("class", "rarity" + chara_rarity)
-    this.style.setProperty("width", "56px")
-    this.style.setProperty("box-shadow", "2px 2px 2px 1px whitesmoke")
+    this.classList.add("rarity" + chara_rarity)
     character_obj_narrow = document.getElementById("enkacard_detail_narrow")
     character_obj_narrow.setAttribute("srcset", imgdir + "/narrow-" + this.id + ".jpg")
     character_obj_wide = document.getElementById("enkacard_detail_wide")
