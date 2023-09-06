@@ -2,6 +2,7 @@ from enkacard import encbanner
 from enkacard.src.utils.FunctionsPill import imgD
 from enkacard.src.utils.translation import supportLang
 import argparse
+import traceback
 
 import asyncio
 import os, shutil
@@ -42,7 +43,12 @@ async def generate_cards():
 
         character_wide_result = await encard.creat(ENCpy, 3)
         print(character_wide_result)
-        character_narrow_result = await encard.creat(ENCpy, 7)
+        try:
+            character_narrow_result = await encard.creat(ENCpy, 7)
+        except Exception as e:
+            print("Exception occurred for template 7, will use template 1 instead. Exception as follows:")
+            print(traceback.format_exc())
+            character_narrow_result = None
         print(character_narrow_result)
         
         character_list_str = []
@@ -60,8 +66,13 @@ async def generate_cards():
             character_list_str.append('"' + character_fullname + '"')
             character_wide_result[uid][character]['img'].convert('RGB').save(
                 os.path.join(outputdir, 'wide-{}.jpg'.format(character_fullname)))
-            character_narrow_result[uid][character]['img'].convert('RGB').save(
-                os.path.join(outputdir, 'narrow-{}.jpg'.format(character_fullname)))
+            if character_narrow_result is not None:
+                character_narrow_result[uid][character]['img'].convert('RGB').save(
+                    os.path.join(outputdir, 'narrow-{}.jpg'.format(character_fullname)))
+            else:
+                shutil.copyfile(
+                    os.path.join(outputdir, 'wide-{}.jpg'.format(character_fullname)),
+                    os.path.join(outputdir, 'narrow-{}.jpg'.format(character_fullname)))
         
         # in case there are more characters in the folder
         for filename in os.listdir(outputdir):
