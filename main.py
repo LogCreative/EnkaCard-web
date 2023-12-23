@@ -1,5 +1,5 @@
 from enkacard import encbanner
-from enkacard.src.utils.FunctionsPill import imgD
+from enkacard.src.utils.pill import get_dowload_img
 from enkacard.src.utils.translation import supportLang
 import argparse
 
@@ -32,17 +32,15 @@ if os.path.exists(outputdir):
 os.makedirs(outputdir, exist_ok=True)
 
 async def generate_cards():
-    async with encbanner.ENC(lang=lang) as encard:
+    async with encbanner.ENC(lang=lang, uid=uid) as encard:
         # get info
-        ENCpy = await encard.enc(uids=uid)
-
-        profile_result = await encard.profile(ENCpy, 1)
+        profile_result = await encard.profile(card=True)
         print(profile_result)
         profile_result['img'].convert('RGB').save(os.path.join(outputdir, 'profile.jpg'))
 
-        character_wide_result = await encard.creat(ENCpy, 3)
+        character_wide_result = await encard.creat(template=3)
         print(character_wide_result)
-        character_narrow_result = await encard.creat(ENCpy, 7)
+        character_narrow_result = await encard.creat(template=7)
         print(character_narrow_result)
         
         character_list_str = []
@@ -50,7 +48,7 @@ async def generate_cards():
             character_str = character.replace(' ','_')  # avoid space in the filename
 
             # avatar
-            character_avatar = await imgD(profile_result['characters'][character]['image'])
+            character_avatar = await get_dowload_img(profile_result['characters'][character]['image'])
             character_rarity = profile_result['characters'][character]['rarity']
             character_fullname = "{}-{}".format(character_str, character_rarity)
             character_avatar.save(
