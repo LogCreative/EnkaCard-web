@@ -32,7 +32,8 @@ if os.path.exists(outputdir):
 os.makedirs(outputdir, exist_ok=True)
 
 async def generate_cards():
-    async with encbanner.ENC(lang=lang, uid=uid) as encard:
+    # FIXME: character_art is just a workaround
+    async with encbanner.ENC(lang=lang, uid=uid, character_art=[]) as encard:
         # get info
         profile_result = await encard.profile(card=True)
         print(profile_result)
