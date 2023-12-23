@@ -33,33 +33,40 @@ os.makedirs(outputdir, exist_ok=True)
 
 async def generate_cards():
     # FIXME: character_art is just a workaround
+    # FIXME: only template=1 is available
     async with encbanner.ENC(lang=lang, uid=uid, character_art=[]) as encard:
         # get info
         profile_result = await encard.profile(card=True)
         print(profile_result)
-        profile_result['img'].convert('RGB').save(os.path.join(outputdir, 'profile.jpg'))
+        profile_result.card.convert('RGB').save(os.path.join(outputdir, 'profile.jpg'))
 
-        character_wide_result = await encard.creat(template=3)
+        character_wide_result = await encard.creat(template=1)
         print(character_wide_result)
-        character_narrow_result = await encard.creat(template=7)
+        character_narrow_result = await encard.creat(template=1)
         print(character_narrow_result)
         
         character_list_str = []
-        for character in profile_result['characters'].keys():
-            character_str = character.replace(' ','_')  # avoid space in the filename
-
+        for character in encard.enc.characters:
+            character_name = character.name.replace(' ','_')
             # avatar
-            character_avatar = await get_dowload_img(profile_result['characters'][character]['image'])
-            character_rarity = profile_result['characters'][character]['rarity']
-            character_fullname = "{}-{}".format(character_str, character_rarity)
+            character_avatar = await get_dowload_img(character.image.icon.url)
+            character_rarity = character.rarity
+            character_fullname = "{}-{}".format(character_name, character_rarity)
             character_avatar.save(
                 os.path.join(outputdir, 'avatar-{}.png'.format(character_fullname)))
-
-            # character detail
             character_list_str.append('"' + character_fullname + '"')
-            character_wide_result[uid][character]['img'].convert('RGB').save(
-                os.path.join(outputdir, 'wide-{}.jpg'.format(character_fullname)))
-            character_narrow_result[uid][character]['img'].convert('RGB').save(
+
+        for card in character_wide_result.card:
+            character_name = card.name.replace(' ','_')
+            character_rarity = card.rarity
+            character_fullname = "{}-{}".format(character_name, character_rarity)
+            card.card.convert('RGB').save(os.path.join(outputdir, 'wide-{}.jpg'.format(character_fullname)))
+        
+        for card in character_narrow_result.card:
+            character_name = card.name.replace(' ','_')
+            character_rarity = card.rarity
+            character_fullname = "{}-{}".format(character_name, character_rarity)
+            card.card.convert('RGB').save(
                 os.path.join(outputdir, 'narrow-{}.jpg'.format(character_fullname)))
         
         # in case there are more characters in the folder
