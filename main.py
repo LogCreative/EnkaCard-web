@@ -2,6 +2,7 @@ from enkacard import encbanner
 from enkacard.src.utils.pill import get_dowload_img
 from enkacard.src.utils.translation import supportLang
 import argparse
+import traceback
 
 import asyncio
 import os, shutil
