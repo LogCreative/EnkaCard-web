@@ -4,7 +4,7 @@ import asyncio
 
 from enkanetwork import EnkaNetworkAPI
 
-client = EnkaNetworkAPI(debug=True)
+client = EnkaNetworkAPI()
 
 async def main():
     async with client:
