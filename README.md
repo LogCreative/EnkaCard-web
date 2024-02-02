@@ -9,7 +9,8 @@ Since the profile is generated in image form, the web
 page generated is not as interactive as the original https://enka.network/,
 but it is enough for most use cases.
 
-<img width="100%" alt="screenshot" src="https://github.com/LogCreative/EnkaCard-web/assets/61653082/80a9f14b-061d-47b6-be1e-ccdc7737814d">
+<img width="100%" alt="screenshot" src="https://github.com/LogCreative/EnkaCard-web/assets/61653082/074e98a5-a59a-4218-8e72-64013b721dfc">
+
 
 ## Usage
 
