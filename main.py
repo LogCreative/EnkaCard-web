@@ -1,5 +1,5 @@
 from enkacard import encbanner
-from enkacard.src.utils.FunctionsPill import imgD
+from enkacard.src.utils.pill import get_dowload_img
 from enkacard.src.utils.translation import supportLang
 import argparse
 import traceback
@@ -33,46 +33,40 @@ if os.path.exists(outputdir):
 os.makedirs(outputdir, exist_ok=True)
 
 async def generate_cards():
-    async with encbanner.ENC(lang=lang) as encard:
+    async with encbanner.ENC(lang=lang, uid=uid) as encard:
         # get info
-        ENCpy = await encard.enc(uids=uid)
-
-        profile_result = await encard.profile(ENCpy, 1)
+        profile_result = await encard.profile(card=True)
         print(profile_result)
-        profile_result['img'].convert('RGB').save(os.path.join(outputdir, 'profile.jpg'))
+        profile_result.card.convert('RGB').save(os.path.join(outputdir, 'profile.jpg'))
 
-        character_wide_result = await encard.creat(ENCpy, 3)
+        character_wide_result = await encard.creat(template=2)
         print(character_wide_result)
-        try:
-            character_narrow_result = await encard.creat(ENCpy, 7)
-        except Exception as e:
-            print("Exception occurred for template 7, will use template 1 instead. Exception as follows:")
-            print(traceback.format_exc())
-            character_narrow_result = None
+        character_narrow_result = await encard.creat(template=1)
         print(character_narrow_result)
         
         character_list_str = []
-        for character in profile_result['characters'].keys():
-            character_str = character.replace(' ','_')  # avoid space in the filename
-
+        for character in encard.enc.characters:
+            character_name = character.name.replace(' ','_')
             # avatar
-            character_avatar = await imgD(profile_result['characters'][character]['image'])
-            character_rarity = profile_result['characters'][character]['rarity']
-            character_fullname = "{}-{}".format(character_str, character_rarity)
+            character_avatar = await get_dowload_img(character.image.icon.url)
+            character_rarity = character.rarity
+            character_fullname = "{}-{}".format(character_name, character_rarity)
             character_avatar.save(
                 os.path.join(outputdir, 'avatar-{}.png'.format(character_fullname)))
-
-            # character detail
             character_list_str.append('"' + character_fullname + '"')
-            character_wide_result[uid][character]['img'].convert('RGB').save(
-                os.path.join(outputdir, 'wide-{}.jpg'.format(character_fullname)))
-            if character_narrow_result is not None:
-                character_narrow_result[uid][character]['img'].convert('RGB').save(
-                    os.path.join(outputdir, 'narrow-{}.jpg'.format(character_fullname)))
-            else:
-                shutil.copyfile(
-                    os.path.join(outputdir, 'wide-{}.jpg'.format(character_fullname)),
-                    os.path.join(outputdir, 'narrow-{}.jpg'.format(character_fullname)))
+
+        for card in character_wide_result.card:
+            character_name = card.name.replace(' ','_')
+            character_rarity = card.rarity
+            character_fullname = "{}-{}".format(character_name, character_rarity)
+            card.card.convert('RGB').save(os.path.join(outputdir, 'wide-{}.jpg'.format(character_fullname)))
+        
+        for card in character_narrow_result.card:
+            character_name = card.name.replace(' ','_')
+            character_rarity = card.rarity
+            character_fullname = "{}-{}".format(character_name, character_rarity)
+            card.card.convert('RGB').save(
+                os.path.join(outputdir, 'narrow-{}.jpg'.format(character_fullname)))
         
         # in case there are more characters in the folder
         for filename in os.listdir(outputdir):
