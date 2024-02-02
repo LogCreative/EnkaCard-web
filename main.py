@@ -59,7 +59,7 @@ async def generate_cards():
             character_name = card.name.replace(' ','_')
             character_rarity = card.rarity
             character_fullname = "{}-{}".format(character_name, character_rarity)
-            card.card.convert('RGB').save(os.path.join(outputdir, 'wide-{}.jpg'.format(character_fullname)))
+            card.card.save(os.path.join(outputdir, 'wide-{}.png'.format(character_fullname))) # FIXME: black background when use jpg
         
         for card in character_narrow_result.card:
             character_name = card.name.replace(' ','_')
