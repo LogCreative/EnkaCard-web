@@ -32,11 +32,5 @@ You could get more help by
 python main.py -h
 ```
 
-> If you encounter: `ERROR:enkanetwork.assets:Character not found with id: `, try run this command first
-> ```bash
-> python update_assets.py
-> ```
-> to update the asset library.
-
 After the generation, you could open `enkacard.html` directly to preview the result. You could directly deploy those files to your website. Click the avatar to display the detail of different characters.
 And `profile.jpg` is also generated for your own use. You could add your customized style to make it look better.
