@@ -1,0 +1,3 @@
+[submodule "EnkaCard"]
+	path = EnkaCard
+	url = https://github.com/DEViantUA/EnkaCard.git
