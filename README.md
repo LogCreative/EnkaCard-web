@@ -34,7 +34,7 @@ python main.py -h
 
 > If you encounter: `ERROR:enkanetwork.assets:Character not found with id: `, try run this command first
 > ```bash
-> git submodule init --update
+> git submodule update --init
 > python update_assets.py
 > ```
 > to update the asset library.
